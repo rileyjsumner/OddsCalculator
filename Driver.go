@@ -184,16 +184,14 @@ func dealFlop(board Board, table Table) {
 
 }
 func dealTurn(board Board, table Table) {
-	printTurnMenu()
 
 	fmt.Println("Card 4")
 	turn := readCard()
 	board.Cards[3] = toCard(turn)
-
 	isTurn := true
 
 	for isTurn {
-		printFlopMenu()
+		printTurnMenu()
 
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
@@ -215,16 +213,14 @@ func dealTurn(board Board, table Table) {
 	}
 }
 func dealRiver(board Board, table Table) {
-	printRiverMenu()
 
 	fmt.Println("Card 5")
 	river := readCard()
 	board.Cards[3] = toCard(river)
-
 	isRiver := true
 
 	for isRiver {
-		printFlopMenu()
+		printRiverMenu()
 
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
