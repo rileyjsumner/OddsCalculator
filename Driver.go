@@ -59,6 +59,18 @@ func printFlopMenu() {
 	fmt.Println("[B] Calculate Making a Hand Odds")
 	fmt.Println("[C] Show Turn")
 }
+func printTurnMenu() {
+	fmt.Println("Pick an Option")
+	fmt.Println("[A] Calculate Winning Odds")
+	fmt.Println("[B] Calculate Making a Hand Odds")
+	fmt.Println("[C] Show River")
+}
+func printRiverMenu() {
+	fmt.Println("Pick an Option")
+	fmt.Println("[A] Calculate Winning Odds")
+	fmt.Println("[B] Calculate Making a Hand Odds")
+	fmt.Println("[C] Clear Board")
+}
 func readCard() [2]string {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Suit")
@@ -134,7 +146,7 @@ func addHand(deck Deck, table Table, isUser bool) {
 	}
 
 }
-func dealFlop(board Board) {
+func dealFlop(board Board, table Table) {
 	fmt.Println("Card One")
 	flop1 := readCard()
 	fmt.Println("Card Two")
@@ -146,7 +158,102 @@ func dealFlop(board Board) {
 	board.Cards[1] = toCard(flop2)
 	board.Cards[2] = toCard(flop3)
 
+	isFlop := true
 
+	for isFlop {
+		printFlopMenu()
+
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		choice := scanner.Text()
+
+		switch choice {
+		case "A":
+			fmt.Println("Calculate Winning Odds")
+			calculateWinOdds(board, table)
+		case "B":
+			fmt.Println("Calculate Making Hand Odds")
+			calculateHandOdds(board, table)
+		case "C":
+			fmt.Println("Show Turn")
+			dealTurn(board, table)
+			isFlop = false
+		}
+
+	}
+
+}
+func dealTurn(board Board, table Table) {
+	printTurnMenu()
+
+	fmt.Println("Card 4")
+	turn := readCard()
+	board.Cards[3] = toCard(turn)
+
+	isTurn := true
+
+	for isTurn {
+		printFlopMenu()
+
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		choice := scanner.Text()
+
+		switch choice {
+		case "A":
+			fmt.Println("Calculate Winning Odds")
+			calculateWinOdds(board, table)
+		case "B":
+			fmt.Println("Calculate Making Hand Odds")
+			calculateHandOdds(board, table)
+		case "C":
+			fmt.Println("Show River")
+			dealRiver(board, table)
+			isTurn = false
+		}
+
+	}
+}
+func dealRiver(board Board, table Table) {
+	printRiverMenu()
+
+	fmt.Println("Card 5")
+	river := readCard()
+	board.Cards[3] = toCard(river)
+
+	isRiver := true
+
+	for isRiver {
+		printFlopMenu()
+
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		choice := scanner.Text()
+
+		switch choice {
+		case "A":
+			fmt.Println("Calculate Winning Odds")
+			calculateWinOdds(board, table)
+		case "B":
+			fmt.Println("Calculate Making Hand Odds")
+			calculateHandOdds(board, table)
+		case "C":
+			fmt.Println("Clear Board")
+			clearBoard(board)
+			isRiver = false
+		}
+
+	}
+}
+func clearBoard(board Board) {
+	board.Cards = [5]Card{}
+}
+
+func calculateWinOdds(board Board, table Table) {
+
+}
+
+func calculateHandOdds(board Board, table Table) {
 
 }
 
@@ -181,7 +288,7 @@ func main() {
 			addHand(deck, table, false)
 		case "C":
 			fmt.Println("\nDeal Flop")
-			dealFlop(board)
+			dealFlop(board, table)
 		case "X":
 			fmt.Println("\nQuit")
 			isRunning = false
